@@ -3,41 +3,37 @@ import './index.css';
 
 class NewsBar extends Component {
     state = {
-        active: "topstories"
+        active: "top"
     }
 
-    handleClick = (e, selected) => {
-        e.preventDefault()
-
+    handleClick = (selected) => {
         this.setState({
             active: selected
         })
-
-        this.props.fetchNews(selected)
     }
 
     render(){
         const {active} = this.state
 
+        console.log(active)
+
         return (
             //TODO need to add layout styling
-            <div>
+            <div className="gap-8 columns-3">
                 <a 
                     href={"/top"}
-                    onClick={(e) => this.handleClick(e, 'topstories')}
-                    className={active === 'topstories' ? 'font-extrabold' : ""}>
+                    className={active === 'top' ? 'font-extrabold' : ""}>
                     Top Stories
                 </a>
                 <a 
                     href={"/latest"}
-                    onClick={(e) => this.handleClick(e, 'newstories')}
-                    className={active === "newstories" ?'font-extrabold' : ""}>
+                    onClick={() => this.handleClick('latest')}
+                    className={active === "latest" ?'font-extrabold' : ""}>
                     Latest Stories
                 </a>
                 <a 
                     href={"/best"}
-                    onClick={(e) => this.handleClick(e, 'beststories')}
-                    className={active === "beststories" ? 'font-extrabold' : ""}>
+                    className={active === "best" ? 'font-extrabold' : ""}>
                     Best Stories
                 </a>
             </div>
