@@ -1,13 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HackerNews from './pages/HackerNews';
+import NewsList from './pages/NewsList';
+import NoPage from './pages/NoPage';
+
 import './index.css';
-//import App from './HackerNews';
-import App from './HackerNewsHome'
+
+export default function App() {
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HackerNews />}>
+            <Route index path="top" element={<NewsList selected={"topstories"}/>} />
+            <Route path="new" element={<NewsList selected={"newstories"}/>} />
+            <Route path="best" element={<NewsList selected={"beststories"}/>} />
+            <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <App />, document.getElementById('root')
 );
 
