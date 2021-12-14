@@ -1,20 +1,22 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 function NewsList(props) {
-    function fetchNews(selected) {
-        const url = `https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`
-        const response = fetch(url)
-        const jsonObj = response.json()
-        const newsList = jsonObj.map(news => <li>{news}</li>)
-        console.log('Inside async function: \n' + newsList)
-        return newsList
+    const [newsList, setNewsList] = useState([])
+
+    useEffect(() => {
+        fetchNews(props.selected)
+        console.log("loading news list for: " + props.selected)
+    }, [props.selected])
+
+    async function fetchNews(selected) {
+        const response = await fetch(`https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`)
+        const jsonObj = await response.json()
+        setNewsList(jsonObj.map(news => <li>{news}</li>))
     }
-
-    console.log('Outside async function: \n' + fetchNews(props.selected))
-
+    
     return (
         <ul>
-            {fetchNews(props.selected)}
+            {newsList}
         </ul>
     )
 }

@@ -5,24 +5,6 @@ import { Outlet, Link } from "react-router-dom";
 
 
 class HackerNews extends Component {
-    // state = {
-    //     newsList: []
-    // }
-
-    // fetchNews = async (selected) => {
-    //     const url = `https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`
-    //     const response = await fetch(url)
-    //     const newsObjects = await response.json()
-
-    //     const newsList = newsObjects.map(news => {
-    //         return <li>{news}</li>
-    //     })
-
-    //     this.setState({
-    //         newsList: newsList
-    //     })
-    // }
-
 
     render() {
         return (
@@ -30,7 +12,7 @@ class HackerNews extends Component {
             <nav>
                 <ul>
                     <li>
-                        <Link to="/top">Top Stories</Link>
+                        <Link to="/">Top Stories</Link>
                     </li>
                     <li>
                         <Link to="/new">Latest Stories</Link>
