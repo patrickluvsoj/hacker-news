@@ -4,29 +4,41 @@ function NewsList(props) {
     const [newsList, setNewsList] = useState([])
 
     useEffect(() => {
-        fetchNews(props.selected)
-        console.log("loading news list for: " + props.selected)
+        fetchNewsList(props.selected)
     }, [props.selected])
 
-    async function fetchId(selected) {
-        const response = await fetch(`https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`)
-        const jsonObj = await response.json()
-        //setNewsList(jsonObj.map(news => <li>{news}</li>))
-        const items = jsonObj.map(id => {
-            return fetchNews(id)
+    async function fetchNewsList(selected) {
+        const ids = await fetch(`https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`)
+                                .then(response => response.json())
+
+        const jsonItems = await Promise.all(ids.slice(0,20).map(id => {
+            return fetch(`https://hacker-news.firebaseio.com/v0/item/${id.toString()}.json?print=pretty`)
+                    .then(items => items.json())
+        }))
+
+        const news = jsonItems.map(item => {
+            const d = new Date(item?.time*1000)
+            const day = d.getDay()
+            const mon = d.getMonth()
+            const yr = d.getFullYear()
+            const hr = d.getHours()
+            const min = d.getMinutes()
+
+            return (
+                <div className={"m-2 p-2 border rounded border-gray-400"}>
+                    <li className={"grid-rows-2"} key={item?.id}>
+                        <div>
+                            <a className={"text-lg font-light text-yellow-600"} href={item?.url}>{item?.title}</a>
+                        </div>
+                        <div>
+                            <label className={"text-sm text-yellow-700"}>by {item?.by} | {mon}/{day}/{yr}, {hr > 12 ? hr - 12 : hr}:{min} {hr > 12 ? "PM" : "AM"} | {item?.score} comments</label>
+                        </div>
+                    </li>
+                </div>
+            )
         })
 
-        return items.maps(item => {
-            <li key={item.id}>
-                <a href={item.url}>{item.title}</a>
-                by {item.by} | {item.time} | {item.score}
-            </li>
-        })
-    }
-
-    async function fetchNews(id) {
-        const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
-        return await response.json()
+        setNewsList(news)
     }
     
     return (
