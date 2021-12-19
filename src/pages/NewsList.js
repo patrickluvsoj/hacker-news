@@ -28,10 +28,10 @@ function NewsList(props) {
                 <div className={"m-2 p-2 border rounded border-gray-400"}>
                     <li className={"grid-rows-2"} key={item?.id}>
                         <div>
-                            <a className={"text-lg font-light text-yellow-600"} href={item?.url}>{item?.title}</a>
+                            <a className={"text-lg text-yellow-600"} href={item?.url}>{item?.title}</a>
                         </div>
                         <div>
-                            <label className={"text-sm text-yellow-700"}>by {item?.by} | {mon}/{day}/{yr}, {hr > 12 ? hr - 12 : hr}:{min} {hr > 12 ? "PM" : "AM"} | {item?.score} comments</label>
+                            <label className={"ml-1 text-sm text-yellow-700"}>by {item?.by} | {mon}/{day}/{yr}, {hr > 12 ? hr - 12 : hr}:{min} {hr > 12 ? "PM" : "AM"} | {item?.score} comments</label>
                         </div>
                     </li>
                 </div>

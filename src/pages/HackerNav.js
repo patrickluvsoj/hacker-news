@@ -1,34 +1,41 @@
-import React, {Component} from 'react'
-import { Outlet, Link } from "react-router-dom";
-
-//import 'pages/../index.css'
+import React from 'react'
+import { Outlet, NavLink } from "react-router-dom";
 
 
-class HackerNav extends Component {
-    
+function HackerNav(){
 
-    render() {
-        return (
+    return (
         <div className={"justify-center"}>
             <h1 className={"my-4 text-center h-12 text-4xl text-yellow-600 font-semibold"}>Hacker News Clone</h1>
             <nav>
                 <ul className={"my-6 grid grid-cols-3 justify-items-center content-center"}>
                     <div>
-                        <Link className={"text-lg text-yellow-600"} to="/">TOP STORIES</Link>
+                        <NavLink 
+                            className={({isActive}) => "tracking-wider text-lg text-yellow-600" + (isActive ? " font-bold" : " ")}
+                            to="/">
+                            TOP STORIES
+                        </NavLink>
                     </div>
                     <div>
-                        <Link className={"text-lg text-yellow-600"} to="/new">LATEST STORIES</Link>
+                        <NavLink 
+                            className={({isActive}) => "tracking-wider text-lg text-yellow-600" + (isActive ? " font-bold" : " ")}
+                            to="/new">
+                            LATEST STORIES
+                        </NavLink>
                     </div>
                     <div>
-                        <Link className={"text-lg text-yellow-600"} to="/best">BEST STORIES</Link>
+                        <NavLink 
+                            className={({isActive}) => "tracking-wider text-lg text-yellow-600" + (isActive ? " font-bold" : " ")}
+                            to="/best">
+                            BEST STORIES
+                        </NavLink>
                     </div>
                 </ul>
             </nav>
     
           <Outlet />
         </div>
-        )
-    }
+    )
 }
 
 export default HackerNav
