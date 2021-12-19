@@ -1,4 +1,4 @@
-[Hacker News](,/project_screenshot.png)
+![Hacker News](./project_screenshot.png)
 
 # Getting Started with Create React App
 
