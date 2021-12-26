@@ -24,7 +24,6 @@ function Comments(props) {
     const [commentList, setComments] = useState("")
 
     useEffect(() => {
-        console.log(props.commentIds)
         fetchComments(props.commentIds)
     }, [])
 
@@ -60,7 +59,7 @@ function Comments(props) {
     
     return(
         <div>
-            <button classname={"justify-self-end"} onClick={handleClick}>
+            <button className="justify-end" onClick={handleClick}>
                 <ExpandIcon isActive={isActive}/>
             </button>
             <ul className={isActive ? "" : "hidden"}>
