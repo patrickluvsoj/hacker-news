@@ -37,12 +37,10 @@ function Comments(props) {
             const commentList = jsonComments.map(comment => {
                 return (
                     <li key={comment.id} >
-                        <label className={"ml-1 mb-2 text-sm text-yellow-700"}>{"By " + comment.by + ": "}</label>
-                        <div className={"ml-3 mb-2 text-sm text-yellow-700"} dangerouslySetInnerHTML={{__html: comment.text}} />
-                    </li>
-                    
+                        <label className={"ml-1 mb-2 text-sm text-yellow-700"}>{"By " + comment?.by + ": "}</label>
+                        <div className={"ml-3 mb-2 text-sm text-yellow-700"} dangerouslySetInnerHTML={{__html: comment?.text}} />
+                    </li>   
                 )
-    
             })
 
             setComments(commentList)
