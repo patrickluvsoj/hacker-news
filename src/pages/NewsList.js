@@ -14,34 +14,29 @@ import NewsItem from './NewsItem'
 // - Make newsList component generic to accept a arbitrary child component
 
 //3. Add notes to news items that are bookmarked 
+//  - Store notes in each local notes component
+//  - Store notes into local storage and pull notes from local storage during first render
+//  - Have a delete button and handleDelete function
+//  - Have an add note handleAdd function
+//        - verify not empty
+//  - Have a handleEdit function
 
 
 const isBookmrked = (bookmrkList, id) => {
     const bookmrkIds = bookmrkList.map(news => news.id)
-    //check news Ids that are stored in bookmarkList state
-    console.log(`bookmarked Ids: ${bookmrkIds}\nadded Id: ${id}`)
     return bookmrkIds.includes(id)
 }
 
 
 function NewsList(props) {
     const [newsList, setNewsList] = useState([])
-    // const [bookmrkList, setBookmrkList] = useState(localStorage.getItem("bookmarks") 
-    //                                     ? JSON.parse(localStorage.getItem("bookmarks")) 
-    //                                     : [])
     const bookmrkList = useRef(localStorage.getItem("bookmarks") 
                                         ? JSON.parse(localStorage.getItem("bookmarks")) 
                                         : [])   
 
-
     useEffect(() => {
         fetchNewsList(props.selected)
     }, [props.selected])
-
-    // useEffect(() => {
-    //     console.log("bookmarkList updated\nlocal storage:\n" + localStorage.getItem("bookmarks") + "\nbookmarkList:\n" + bookmrkList)
-    // }, [bookmrkList])
-
 
     const handleLike = (id) => {
         let newBookmrkList;
@@ -52,25 +47,35 @@ function NewsList(props) {
             newBookmrkList = [...bookmrkList.current, {id: id, notes: ""}]
         }
 
-        // setBookmrkList(newBookmrkList)
         bookmrkList.current = newBookmrkList
         localStorage.setItem("bookmarks", JSON.stringify(newBookmrkList))
-        // Check local storage information with below
-        //console.log("bookmarkList updated\nlocal storage:\n" + localStorage.getItem("bookmarks") + "\nbookmarkList:\n" + bookmrkList)
     }
 
     async function fetchNewsList(selected) {
-        const ids = await fetch(`https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`)
-                                .then(response => response.json())
+        let jsonItems = [];
 
-        const jsonItems = await Promise.all(ids.slice(0,20).map(id => {
-            return fetch(`https://hacker-news.firebaseio.com/v0/item/${id.toString()}.json?print=pretty`)
-                    .then(items => items.json())
-        }))
+        if (selected !== 'bookmark') {
+            const ids = await fetch(`https://hacker-news.firebaseio.com/v0/${selected}.json?print=pretty`)
+            .then(response => response.json())
+
+            jsonItems = await Promise.all(ids.slice(0,20).map(id => {
+                return fetch(`https://hacker-news.firebaseio.com/v0/item/${id.toString()}.json?print=pretty`)
+                .then(items => items.json())
+            }))
+        } else {
+            const ids = bookmrkList.current.map(news => news.id)
+
+            jsonItems = await Promise.all(ids.map(id => {
+                return fetch(`https://hacker-news.firebaseio.com/v0/item/${id.toString()}.json?print=pretty`)
+                .then(items => items.json())
+            }))
+        }
+
 
         const news = jsonItems.map(item => {
             return (
                 <NewsItem 
+                    key={item?.id}
                     item={item} 
                     handleLike={handleLike}
                     selected={props.selected}

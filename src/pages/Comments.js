@@ -44,7 +44,6 @@ function Comments(props) {
             })
 
             setComments(commentList)
-
         } else {
             const commentList = <li className={"ml-3 mb-2 text-sm text-yellow-700"}>"no comments"</li>
             setComments(commentList)

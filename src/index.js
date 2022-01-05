@@ -16,6 +16,7 @@ export default function App() {
               <Route index element={<NewsList selected={"topstories"}/>} />
               <Route path="new" element={<NewsList selected={"newstories"}/>} />
               <Route path="best" element={<NewsList selected={"beststories"}/>} />
+              <Route path="bookmark" element={<NewsList selected={"bookmark"}/>} />
               <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>

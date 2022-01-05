@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import Comments from './Comments'
+import Notes from './Notes'
 import {MdOutlineBookmarkBorder, MdOutlineBookmark} from "react-icons/md";
 import {IconContext} from "react-icons";
+import convertTimeHelper from './convertTimeHelper'
 
 //Conditional component that renders a bookmark icon
 function LikeIcn(props) {
@@ -20,6 +22,15 @@ function LikeIcn(props) {
     }
 }
 
+//conditinal component that renders Comments or Personal Notes
+function Details(props) {
+    if (props.selected !== 'bookmark') {
+        return <Comments commentIds={props.item?.kids} isActive={false}/>
+    } else {
+        return <Notes noteId={props.item?.id}/>
+    }
+}
+
 function NewsItem(props) {
     const [isActive, setIsActive] = useState(props.isBookmrked)
     //console.log(isActive)
@@ -30,12 +41,7 @@ function NewsItem(props) {
 
     //Formatting date
     const item = props.item
-    const d = new Date(item?.time*1000)
-    const day = d.getDay()  
-    const mon = d.getMonth()
-    const yr = d.getFullYear()
-    const hr = d.getHours()
-    const min = d.getMinutes()
+    const formattedTimeStr = convertTimeHelper(item?.time * 1000)
 
     const handleClick = () => {
         props.handleLike(item?.id)
@@ -44,7 +50,7 @@ function NewsItem(props) {
 
     return (
         <div className={"m-2 p-2 border rounded border-gray-400"}>
-            <li className={"grid-rows-3"} key={item?.id}>
+            <li className={"grid-rows-3"}>
                 <div className='grid grid-cols-2'>
                     <div>
                         <a className={"text-lg text-yellow-600"} href={item?.url}>{item?.title}</a>
@@ -56,10 +62,10 @@ function NewsItem(props) {
                     </div>  
                 </div>
                 <div>
-                    <label className={"ml-1 text-sm text-yellow-700"}>by {item?.by} | {mon}/{day}/{yr}, {hr > 12 ? hr - 12 : hr}:{min} {hr > 12 ? "PM" : "AM"} | {item?.descendants} comments</label>
+                    <label className={"ml-1 text-sm text-yellow-700"}>by {item?.by} | {formattedTimeStr} | {item?.descendants} comments</label>
                 </div>
                 <div>
-                    <Comments commentIds={item?.kids} isActive={false}/>
+                    <Details selected={props.selected} item={item}/>
                 </div>
             </li>
         </div>
